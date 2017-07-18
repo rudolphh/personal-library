@@ -1,7 +1,7 @@
 **FreeCodeCamp**- Information Security and Quality Assurance
 ------
 
-Project Personal Library
+Project Personal Library [URL](https://cold-sprite.glitch.me/)
 
 1) ADD YOUR MongoDB connection string to .env without quotes as db
     `example: DB=mongodb://admin:pass@1234.mlab.com:1234/fccpersonallib`
@@ -9,5 +9,3 @@ Project Personal Library
 3) You need to create all routes within `routes/api.js`
 4) You will add any security features to `server.js`
 5) You will create all of the functional tests in `tests/2_functional-tests.js`
-
-
