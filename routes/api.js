@@ -41,16 +41,19 @@ module.exports = function (app) {
     .post(function (req, res){
       var title = req.body.title;
       //response will contain new book object including at least _id and title
-      MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
-        var collection = db.collection('books');
-        var book = { title: title, comments: [] };
+      if(!title) res.send('missing title input');
+      else {
+        MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
+          var collection = db.collection('books');
+          var book = { title: title, comments: [] };
 
-        collection.insertOne(book, function(err, doc){
-          book._id = doc.insertedId;
-          delete book.comments;
-          !err ? res.json(book) : res.send(err);
-        })
-      });
+          collection.insertOne(book, function(err, doc){
+            book._id = doc.insertedId;
+            delete book.comments;
+            !err ? res.json(book) : res.send(err);
+          })
+        });
+      }
     })
 
     .delete(function(req, res){
