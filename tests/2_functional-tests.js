@@ -37,7 +37,7 @@ suite('Functional Tests', function() {
 
   suite('Routing tests', function() {
 
-    //var valid_id;
+    var valid_id;
 
     suite('POST /api/books with title => create book object/expect book object', function() {
 
@@ -53,7 +53,7 @@ suite('Functional Tests', function() {
           assert.property(res.body, 'title', 'Book should contain title');
           assert.property(res.body, '_id', 'Book should contain _id');
           assert.equal(res.body.title, 'Of Mice and Men');
-          //if(!err) valid_id = res.body._id;
+          if(!err) valid_id = res.body._id;
           done();
         });
       });
@@ -98,11 +98,22 @@ suite('Functional Tests', function() {
          .end(function(err, res){
            assert.equal(res.status, 200);
            assert.equal(res.text, 'no book exists');
+           done();
          });
       });
 
       test('Test GET /api/books/[id] with valid id in db',  function(done){
-        //done();
+        chai.request(server)
+        .get('/api/books/'+valid_id)
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.isObject(res.body, 'response should be an object');
+          assert.property(res.body, 'comments', 'Book should contain comments');
+          assert.isArray(res.body.comments, 'comments should be an array');
+          assert.property(res.body, 'title', 'Book should contain title');
+          assert.property(res.body, '_id', 'Book should contain _id');
+          done();
+        });
       });
 
     });
@@ -111,7 +122,19 @@ suite('Functional Tests', function() {
     suite('POST /api/books/[id] => add comment/expect book object with id', function(){
 
       test('Test POST /api/books/[id] with comment', function(done){
-        //done();
+        chai.request(server)
+        .post('/api/books/'+valid_id)
+        .send({ comment: 'this is a comment' })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.isObject(res.body, 'response should be an object');
+          assert.property(res.body, 'comments', 'Book should contain comments');
+          assert.isArray(res.body.comments, 'comments should be an array');
+          assert.property(res.body, 'title', 'Book should contain title');
+          assert.property(res.body, '_id', 'Book should contain _id');
+          assert.equal(res.body.comments[0], 'this is a comment');
+          done();
+        });
       });
 
     });
